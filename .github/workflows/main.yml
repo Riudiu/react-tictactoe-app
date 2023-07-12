@@ -38,8 +38,9 @@ jobs:
       
     - name: Build                   # React Build
       run: npm run build
-      
-    - uses: awact/s3-action@master  # S3에 배포하기
+
+    - name: Deploy                  # S3에 배포하기
+    - uses: awact/s3-action@master  
       with:
         args: --acl public-read --follow-symlinks --delete
       env:
