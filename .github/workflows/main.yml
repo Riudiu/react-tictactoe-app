@@ -44,5 +44,11 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Invalidate CloudFront Cache   # 새로 리소스를 업데이트할 때 기존 캐시 무효화
-      run: 
-        aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths /*
+      uses: aws-actions/aws-cli@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: 'ap-northeast-2'
+        command: cloudfront create-invalidation
+        args: --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/*"
+      
