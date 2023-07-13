@@ -37,15 +37,13 @@ jobs:
     - name: Deploy                  # S3에 배포하기
       uses: awact/s3-action@master  
       env:
-        # SOURCE_DIR: './build'
-        # AWS_REGION: 'ap-northeast-2'
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           aws s3 cp \
             --recursive \
             --region ap-northeast-2 \
-            build s3://${{ secrets.AWS_S3_BUCKET }}
+            build s3://react-ci-cd-practice
 
     - name: Invalidate CloudFront Cache      # 새로 리소스를 업데이트할 때 기존 캐시 무효화
       uses: chetan/invalidate-cloudfront-action@v2
