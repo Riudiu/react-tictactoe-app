@@ -1,70 +1,90 @@
-# Getting Started with Create React App
+# React Tic-Tac-Toe App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### 앱 실행:
 
-## Available Scripts
+``` shell
+yarn install
+yarn start
+```
 
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `yarn test`
+## 공부 내용
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 컴포넌트(Component) 
 
-### `yarn build`
+리액트는 여러 컴포넌트를 이용해서 웹 앱을 개발하게 됩니다. 
+컴포넌트 -> 리액트로 만들어진 앱을 이루는 최소한의 단위
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+즉 리액트는 여러 컴포넌트 조각으로 구성되어 있습니다.     
+만약 하나의 페이지를 리액트로 만든다고 보면 여러 개의 컴포넌트가 모여서 하나의 페이지를 이루게 됩니다.     
+이렇게 컴포넌트가 나누어져 있기 때문에 하나의 컴포넌트를 여러 곳에서 재사용할 수 있습니다.        
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+리액트 컴포넌트는 두 가지가 있습니다.    
+클래스형 컴포넌트(Class Components) VS 함수형 컴포넌트(Funtional Components)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+원래는 클래스 컴포넌트를 이용해서 많이 개발했지만,     
+리액트에서 React-Hooks 라는 것을 발표한 이후부터는 함수형 컴포넌트를 이용해서 개발을 많이 합니다. 
+ 
 
-### `yarn eject`
+<!-- ## 가상 돔(Virtual DOM) -->
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## CI/CD - main.yml
 
-## Learn More
+``` shell
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+name: react-tictactoe CI/CD
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
-### Code Splitting
+jobs:
+  build:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+    runs-on: ubuntu-latest
 
-### Analyzing the Bundle Size
+    strategy:
+      matrix:
+        node-version: [18.x]
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'yarn'
+    
+    - name: Install dependencies
+      run: yarn install
+      
+    - name: Build                   # React Build
+      run: yarn build
 
-### Making a Progressive Web App
+    - name: Deploy                  # S3에 배포하기
+      uses: awact/s3-action@master  
+      env:
+        SOURCE_DIR: './build'
+        AWS_REGION: 'ap-northeast-2'
+        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+    - name: Invalidate CloudFront Cache  # 새로 리소스를 업데이트할 때 기존 캐시 무효화
+      run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/*"
+      env:
+        AWS_REGION: 'ap-northeast-2'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        
+```
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
