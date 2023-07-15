@@ -14,7 +14,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ## 컴포넌트(Component) 
 
-리액트는 여러 컴포넌트를 이용해서 웹 앱을 개발하게 됩니다. 
+리액트는 여러 컴포넌트를 이용해서 웹 앱을 개발하게 됩니다.     
 컴포넌트 -> 리액트로 만들어진 앱을 이루는 최소한의 단위
 
 즉 리액트는 여러 컴포넌트 조각으로 구성되어 있습니다.     
@@ -33,8 +33,9 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 
 
-## CI/CD - main.yml
+## CI/CD
 
+### main.yml
 ``` shell
 
 name: react-tictactoe CI/CD

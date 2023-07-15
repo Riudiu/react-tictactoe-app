@@ -6,11 +6,12 @@ export function Square({onClick, value}) {
         <button 
             css={{
                 width: 120,
-                padding: 32,
+                height: 120,
                 backgroundColor: 'skyBlue',
                 fontSize: 24,
-                borderRadius: 20,
-                margin: "1.5px"
+                borderRadius: 10,
+                margin: "1.5px",
+                border: '2px solid black',
             }}
             onClick={onClick}
         >

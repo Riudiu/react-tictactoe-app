@@ -6,11 +6,14 @@ import { Square } from './Square';
 export function Board() {
     // useState Hook - [변수 이름, 해당 변수의 state를 정하는 함수] = useState();
     const [squares, setSquares] = useState(Array(9).fill(null));
+    const [xIsNext, setXIsNext] = useState(false);
+    let status = `Next player: ${xIsNext ? "X" : "O"}`;
 
     const handleClick = (i) => {
         const newSquares = squares.slice();
-        newSquares[i] = "X";
+        newSquares[i] = xIsNext ? "X" : "O";
         setSquares(newSquares);
+        setXIsNext(current => !current);
     }
  
     function renderSquare(i) {
@@ -26,7 +29,7 @@ export function Board() {
                 css = {{
                     marginBottom: 10
                 }}
-            >"Next player: X, O"</div>
+            > {status} </div>
             <div className='board-row'>
                 {renderSquare(0)}
                 {renderSquare(1)}
