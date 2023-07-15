@@ -12,6 +12,7 @@ export function Square({onClick, value}) {
                 borderRadius: 10,
                 margin: "1.5px",
                 border: '2px solid black',
+                float: 'left',
             }}
             onClick={onClick}
         >
