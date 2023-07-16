@@ -12,17 +12,21 @@ export default function App() {
       <div 
         css={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
+          height: '100vh',
+          justifyContent: 'center',
+          alignItems: 'center'
         }}
       >
         <div>
           <Board />
         </div>
         <div css={{
-            marginLeft: '20px',
+            marginTop: 50,
+            color: 'grey'
           }}
         >
-            im info
+          ⓒ Riudiu.
         </div>
       </div>
     </>

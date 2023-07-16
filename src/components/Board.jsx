@@ -67,7 +67,8 @@ export function Board() {
         <div>
             <div 
                 css = {{
-                    marginBottom: 10
+                    marginBottom: 20,
+                    fontSize: '20px'
                 }}
             > {status} </div>
             <div className='board-row'>
